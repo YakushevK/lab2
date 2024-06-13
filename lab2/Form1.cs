@@ -26,7 +26,7 @@ namespace lab2
             InitializeComponent();
 
             updateTimer = new Timer();
-            updateTimer.Interval = 500; // Интервал в миллисекундах (можно настроить по вашему усмотрению)
+            updateTimer.Interval = 500; 
             updateTimer.Tick += UpdateTimer_Tick;
 
             trackBarBrightness.Scroll += trackBarBrightness_Scroll_1;
@@ -76,7 +76,7 @@ namespace lab2
                 };
                 UpdateProcessedImage();
 
-                //processedImage = sourceImage.Clone();
+               
             }
 
         }
@@ -153,7 +153,7 @@ namespace lab2
                 // Применяем изменения яркости и контраста
                 if (trackBarBrightness.Value != 0 || trackBarContrast.Value != 0)
                 {
-                    processedImage._EqualizeHist(); // Можете применить другие методы обработки здесь
+                    processedImage._EqualizeHist(); 
 
                     // Применяем коррекцию гамма
                     double gamma = 1.0 + (trackBarContrast.Value / 100.0);
@@ -163,7 +163,6 @@ namespace lab2
                     processedImage = ApplyBrightness(processedImage, trackBarBrightness.Value);
                 }
 
-                // Отобразить обработанное изображение в imageBox2
                 imageBox2.Image = processedImage;
             }
         }
@@ -215,10 +214,7 @@ namespace lab2
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            // Отключаем таймер
             updateTimer.Stop();
-
-            // Обновляем изображение
             UpdateProcessedImage();
         }
 
@@ -240,7 +236,6 @@ namespace lab2
         {
             if (sourceImage != null)
             {
-                // Выполняем логическую операцию дополнения
                 Image<Bgr, byte> complementedImage = sourceImage.Not();
                 imageBox2.Image = complementedImage;
             }
@@ -303,7 +298,7 @@ namespace lab2
         {
             if (sourceImage != null)
             {
-                int kernelSize = 10; // Размер ядра медианного фильтра
+                int kernelSize = 10; 
                 Image<Bgr, byte> medianBlurredImage = ApplyMedianBlur(sourceImage, kernelSize);
                 imageBox2.Image = medianBlurredImage;
             }
@@ -359,7 +354,7 @@ namespace lab2
             return resultImage;
         }
 
-        //оконного фильтра (8)
+       
         
 
         private void buttonApplyFilter_Click(object sender, EventArgs e)
@@ -449,8 +444,6 @@ namespace lab2
                         bgrImage[y, x] = new Bgr(ClipValue(pixel.Blue + value), ClipValue(pixel.Green + value), ClipValue(pixel.Red + value));
                     }
                 }
-
-                // Обновление изображения в imageBox2
                 imageBox2.Image = bgrImage;
             }
         }
@@ -472,8 +465,6 @@ namespace lab2
                         bgrImage[y, x] = new Bgr(ClipValue((pixel.Blue - 127) * value + 127), ClipValue((pixel.Green - 127) * value + 127), ClipValue((pixel.Red - 127) * value + 127));
                     }
                 }
-
-                // Обновление изображения в imageBox2
                 imageBox2.Image = bgrImage;
             }
         }
@@ -489,7 +480,7 @@ namespace lab2
         {
             if (originalMaskImage != null)
             {
-                // Применение смешивания изображений с помощью метода AddWeighted
+                // Применение смешивания изображений
                 CvInvoke.AddWeighted(sourceImage, blendValue, originalMaskImage, 1 - blendValue, 0, filteredImage);
                 // Отображение результирующего изображения
                 imageBox2.Image = filteredImage;
@@ -503,8 +494,6 @@ namespace lab2
                 // Применение маски к исходному изображению
                 filteredImage = new Image<Bgr, byte>(sourceImage.Size);
                 CvInvoke.AddWeighted(sourceImage, 0.5, originalMaskImage, 0.5, 0, filteredImage);
-
-                // Отображение фильтрованного изображения в imageBox2
                 imageBox2.Image = filteredImage;
             }
         }
@@ -512,10 +501,10 @@ namespace lab2
        
 
 
-        //10
+        
         private void OnThresholdValueChanged(object sender, EventArgs e)
         {
-            ApplyCartoonFilter(trackBarThreshold.Value); // Переприменяем фильтр при изменении порога
+            ApplyCartoonFilter(trackBarThreshold.Value); 
         }
 
         private void ApplyCartoonFilter(int thresholdValue)
@@ -542,8 +531,6 @@ namespace lab2
 
                 // Применяем маску к исходному изображению
                 Image<Bgr, byte> cartoonImage = sourceImage.And(new Bgr(255, 255, 255), mask);
-
-                // Отображаем изображение с примененным фильтром на imageBox2
                 imageBox2.Image = cartoonImage;
             }
         }
